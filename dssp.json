@@ -1,0 +1,353 @@
+[
+  {
+    "stt": 1,
+    "productCode": "TPK32102",
+    "productName": "Giấy Carbonless IMP K210/2 - 3L   (W,P,B)",
+    "unit": "Thùng",
+    "price": 280000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 2,
+    "productCode": "TPK22102",
+    "productName": "Giấy Carbonless IMP K210/2 - 2L   (W,P)",
+    "unit": "Thùng",
+    "price": 280000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 3,
+    "productCode": "TPK4240",
+    "productName": "Giấy Carbonless khổ 240 - 4L   (W,P,Y,B)",
+    "unit": "Thùng",
+    "price": 320000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 4,
+    "productCode": "TPK42102",
+    "productName": "Giấy Carbonless khổ 210/2 - 4L   (W,P,Y,B)",
+    "unit": "Thùng",
+    "price": 280000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 5,
+    "productCode": "TPK2210",
+    "productName": "Giấy Carbonless IMP K210-2L   (W,P)",
+    "unit": "Thùng",
+    "price": 280000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 6,
+    "productCode": "TP1210",
+    "productName": "Giấy 1 Liên SWhite khổ 210",
+    "unit": "Thùng",
+    "price": 180000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 7,
+    "productCode": "TP12102",
+    "productName": "Giấy 1 Liên SWhite khổ 210/2",
+    "unit": "Thùng",
+    "price": 180000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 8,
+    "productCode": "TP1240",
+    "productName": "Giấy 1 Liên SWhite khổ 240",
+    "unit": "Thùng",
+    "price": 200000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 9,
+    "productCode": "TP1380",
+    "productName": "Giấy 1 Liên SWhite khổ 380",
+    "unit": "Thùng",
+    "price": 315000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 10,
+    "productCode": "TPK3210",
+    "productName": "Giấy Carbonless IMP K210 - 3L   (W,P,B)",
+    "unit": "Thùng",
+    "price": 280000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 11,
+    "productCode": "TPK4210",
+    "productName": "Giấy Carbonless khổ 210 - 4L   (W,P,Y,B)",
+    "unit": "Thùng",
+    "price": 280000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 12,
+    "productCode": "TP1240/2",
+    "productName": "Giấy 1 Liên SWhite khổ 240/2",
+    "unit": "Thùng",
+    "price": 210000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 13,
+    "productCode": "TPK2240",
+    "productName": "Giấy Carbonless IMP K240 - 2L   (W,P)",
+    "unit": "Thùng",
+    "price": 320000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 14,
+    "productCode": "TPK22402",
+    "productName": "Giấy Carbonless IMP K240/2 - 2L   (W,P)",
+    "unit": "Thùng",
+    "price": 320000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 15,
+    "productCode": "TPK3240",
+    "productName": "Giấy Carbonless IMP K240 - 3L   (W,P,B)",
+    "unit": "Thùng",
+    "price": 320000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 16,
+    "productCode": "TPK32402",
+    "productName": "Giấy Carbonless IMP K240/2 - 3L   (W,P,B)",
+    "unit": "Thùng",
+    "price": 320000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 17,
+    "productCode": "TPK3210/2",
+    "productName": "Giấy Carbonless IMP K210/2 - 3L   (W,P,Y)",
+    "unit": "Thùng",
+    "price": 280000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 18,
+    "productCode": "TPK42402",
+    "productName": "Giấy Carbonless khổ 240/2 - 4L   (W,P,Y,B)",
+    "unit": "Thùng",
+    "price": 320000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 19,
+    "productCode": "TP001210075",
+    "productName": "Giấy E Bank",
+    "unit": "Ram",
+    "price": 71000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 20,
+    "productCode": "TP008080030",
+    "productName": "Giấy in nhiệt khổ  80 -  ɸ 45 mm",
+    "unit": "Cuộn",
+    "price": 7000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 21,
+    "productCode": "TP008080082",
+    "productName": "Giấy in nhiệt khổ 80 -   ɸ80 mm",
+    "unit": "Cuộn",
+    "price": 19000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 22,
+    "productCode": "TP010210000",
+    "productName": "Giấy Telex khổ 210-1L",
+    "unit": "Cuộn",
+    "price": 40000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 23,
+    "productCode": "HH001210470",
+    "productName": "Giấy Photo A4 ĐL:70 Double A",
+    "unit": "Ram",
+    "price": 70000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 24,
+    "productCode": "HH001210080",
+    "productName": "Giấy Photo A4 ĐL:80 Double A",
+    "unit": "Ram",
+    "price": 88000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 25,
+    "productCode": "HH001210091",
+    "productName": "Giấy Photo A4 IK Natural ĐL: 70gsm",
+    "unit": "Ram",
+    "price": 56000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 26,
+    "productCode": "TP009075000",
+    "productName": "Giấy Cuộn máy tính tiền K75",
+    "unit": "Cuộn",
+    "price": 4500,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 27,
+    "productCode": "TP008557038",
+    "productName": "Giấy in nhiệt khổ 57 -   ɸ38 mm",
+    "unit": "Cuộn",
+    "price": 4000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 28,
+    "productCode": "TP002840005",
+    "productName": "Giấy Cuộn Ao K840*30m",
+    "unit": "Cuộn",
+    "price": 100000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 29,
+    "productCode": "TP009057000",
+    "productName": "Giấy Cuộn máy tính tiền K57",
+    "unit": "Cuộn",
+    "price": 3000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 30,
+    "productCode": "TP002840000",
+    "productName": "Giấy Cuộn Ao K840*100m",
+    "unit": "Cuộn",
+    "price": 280000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 31,
+    "productCode": "TP008057030",
+    "productName": "Giấy in nhiệt khổ 57-  ɸ45 mm",
+    "unit": "Cuộn",
+    "price": 4500,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 32,
+    "productCode": "HH001210087",
+    "productName": "Giấy Photo A4 ĐL:70 Accura",
+    "unit": "Ram",
+    "price": 56000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 33,
+    "productCode": "TP009044",
+    "productName": "Giấy Cuộn máy tính tiền K44",
+    "unit": "Cuộn",
+    "price": 3000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 34,
+    "productCode": "TPK52100001",
+    "productName": "Giấy Carbonless IMP K210 - 5L (W,P,Y,B,G)",
+    "unit": "Thùng",
+    "price": 280000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 35,
+    "productCode": "TPK52102",
+    "productName": "Giấy Carbonless IMP K210/2 - 5L (W,P,Y,B,G)",
+    "unit": "Thùng",
+    "price": 280000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 36,
+    "productCode": "TP002610002",
+    "productName": "Giấy Cuộn A1 K610*30m",
+    "unit": "Cuộn",
+    "price": 85000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 37,
+    "productCode": "TP002650001",
+    "productName": "Giấy Cuộn A1 K610*100m",
+    "unit": "Cuộn",
+    "price": 210000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 38,
+    "productCode": "HH001210086",
+    "productName": "Giấy Photo A4 ĐL:80 Accura",
+    "unit": "Ram",
+    "price": 65000,
+    "vat": "8%",
+    "note": ""
+  },
+  {
+    "stt": 39,
+    "productCode": "TP008075030",
+    "productName": "Giấy in nhiệt khổ  75 -  ɸ45 mm",
+    "unit": "Cuộn",
+    "price": 6500,
+    "vat": "8%",
+    "note": ""
+  }
+]
