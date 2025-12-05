@@ -154,7 +154,7 @@ function updateProductDropdowns() {
 }
 
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_DEPLOY_ID/exec'; // replace
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxyquaOq5FxFbbXK7I4bIGOQnKR0U6dmobmW7oDkrzeKbHP_ezN0vcWedsjobqevaKC/exec'; // replace
 
 async function gatherFormData() {
   // gather top-level fields by element IDs in your `index.html`
