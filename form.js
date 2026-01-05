@@ -462,7 +462,7 @@ async function submitToSheet() {
 // Save first, then print, then clear and increment PXK
 function clearFormForNext() {
   // clear top-level customer/transport fields
-  const idsToClear = ['customer-name', 'customer-address', 'customer-tax', 'invoice-number', 'invoice-date-2', 'warehouse', 'batch', 'delivery-info', 'truck-number', 'driver-name'];
+  const idsToClear = ['customer-name', 'customer-address', 'customer-tax', 'invoice-number', 'invoice-date', 'warehouse', 'batch', 'delivery-info', 'truck-number', 'driver-name'];
   idsToClear.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
