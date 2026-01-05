@@ -31,22 +31,29 @@ function formatPXKNumber(num) {
 
 // Function to get the next PXK number
 function getNextPXKNumber() {
-  // Initialize if not already set
+  // Initialize currentPXKNumber if not defined
   if (typeof currentPXKNumber === 'undefined') {
     currentPXKNumber = 1;
   }
 
   const lastNumber = localStorage.getItem('lastPXKNumber');
+
   if (lastNumber) {
+    // Use the stored number + 1
     currentPXKNumber = parseInt(lastNumber) + 1;
   } else {
-    currentPXKNumber = 1; // Default starting number
+    // FIRST TIME: Start from 1
+    currentPXKNumber = 1;
+    // Save it for future
+    localStorage.setItem('lastPXKNumber', currentPXKNumber.toString());
   }
 
   const pxkInput = document.querySelector('input[name="Số PXK"]');
   if (pxkInput) {
     pxkInput.value = 'PXK-' + formatPXKNumber(currentPXKNumber);
   }
+
+  console.log('PXK Number set to:', pxkInput?.value);
   return currentPXKNumber;
 }
 
