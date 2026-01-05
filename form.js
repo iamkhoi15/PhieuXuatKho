@@ -31,9 +31,16 @@ function formatPXKNumber(num) {
 
 // Function to get the next PXK number
 function getNextPXKNumber() {
+  // Initialize if not already set
+  if (typeof currentPXKNumber === 'undefined') {
+    currentPXKNumber = 1;
+  }
+
   const lastNumber = localStorage.getItem('lastPXKNumber');
   if (lastNumber) {
     currentPXKNumber = parseInt(lastNumber) + 1;
+  } else {
+    currentPXKNumber = 1; // Default starting number
   }
 
   const pxkInput = document.querySelector('input[name="Số PXK"]');
