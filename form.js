@@ -26,14 +26,14 @@ fetch('dssp.json')
 
 // Function to format PXK number with leading zeros
 function formatPXKNumber(num) {
-  return num.toString().padStart(7, '0');
+  return num.toString().padStart(6, '0');
 }
 
 // Function to get the next PXK number
 function getNextPXKNumber() {
   // Initialize currentPXKNumber if not defined
   if (typeof currentPXKNumber === 'undefined') {
-    currentPXKNumber = 1;
+    currentPXKNumber = 5001;
   }
 
   const lastNumber = localStorage.getItem('lastPXKNumber');
