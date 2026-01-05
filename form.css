@@ -109,15 +109,7 @@ form {
     flex-direction: column;
 }
 
-.left .inputArea .name,
-.left .inputArea .company {
-    width: 9.3cm;
-    height: 0.7cm;
-    font-size: 15px;
-    box-sizing: border-box;
-}
-
-.left .inputArea .address {
+.left .inputArea textarea {
     width: 9.3cm;
     height: 1.4cm;
     font-size: 15px;
@@ -190,8 +182,40 @@ form {
 
 .content table tbody tr {
     width: 18.1cm;
-    height: calc(9.8cm / 12);
-    max-height: 0.8cm;
+    min-height: 0.8cm;
+    height: 0.8cm;
+    max-height: 6cm;
+    /* allow rows to expand vertically when textarea grows */
+    vertical-align: middle;
+    overflow: visible;
+}
+
+/* Hover-only add-row button */
+.table-container {
+    position: relative;
+}
+
+.add-row-btn {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    background: #0b76ef;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s ease;
+    z-index: 10;
+}
+
+.table-container:hover .add-row-btn {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 
@@ -201,6 +225,7 @@ td,
 td input {
     border: 1px solid black;
     text-align: center;
+    vertical-align: top;
 }
 
 th {
@@ -237,27 +262,105 @@ table .unityHead {
     height: 0.8cm;
 }
 
-.product-select {
-    /* Basic styling */
+.product-select,
+.product-input {
+    /* Basic styling for both legacy selects and the new textarea input */
     appearance: none;
-    /* Standard */
     -webkit-appearance: none;
-    /* Safari/Chrome */
     -moz-appearance: none;
-    /* Firefox */
     background-image: none;
 
     border: none;
     font-size: 15px;
     margin: 0;
-    padding: 0;
+    padding: 0 4px;
     width: 100%;
-    height: 0.8cm;
+    min-height: 0.8cm;
+    /* keep a minimum row height */
+    height: auto;
+    /* allow textarea to grow */
     width: 8.7cm;
     word-break: break-word;
     white-space: normal;
-    /* Allow wrapping if browser supports */
+    box-sizing: border-box;
+}
 
+.product-input {
+    resize: none;
+    overflow-y: auto;
+    /* allow vertical scrolling if content exceeds max-height */
+    padding: 4px;
+    line-height: 1;
+    max-height: 6cm;
+    /* match row maximum */
+}
+
+.product-input {
+    resize: none;
+    overflow: hidden;
+    padding: 4px;
+    line-height: 1;
+}
+
+/* Ensure the cell can contain an absolutely-positioned suggestions box */
+.product-cell {
+    position: relative;
+    overflow: visible;
+    /* allow suggestions to overflow the cell to the right */
+}
+
+/* Suggestion list (appears to the right of the product cell) */
+.suggestions {
+    position: absolute;
+    left: calc(100% + 8px);
+    top: 0;
+    width: 9cm;
+    max-width: calc(100vw - 40px);
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    max-height: 8cm;
+    overflow-y: auto;
+    z-index: 200;
+    display: none;
+    box-shadow: 0 8px 26px rgba(15, 23, 42, 0.12);
+    padding: 6px 6px;
+}
+
+.suggestion-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background .12s ease, transform .06s ease;
+    color: #111;
+}
+
+.suggestion-item+.suggestion-item {
+    margin-top: 6px;
+}
+
+.suggestion-item .s-main {
+    font-weight: 600;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.suggestion-item .s-sub {
+    font-size: 12px;
+    color: #667085;
+    margin-left: 8px;
+    white-space: nowrap;
+}
+
+.suggestion-item:hover,
+.suggestion-item.active {
+    background: linear-gradient(90deg, #f5fbff 0%, #ffffff 100%);
+    transform: translateY(-1px);
 }
 
 
@@ -382,7 +485,8 @@ table .unityHead {
 
     #print-button,
     #select-file-button,
-    #submit {
+    #submit,
+    #add-row-btn {
         visibility: hidden;
         display: none !important;
     }

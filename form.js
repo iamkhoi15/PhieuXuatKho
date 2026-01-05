@@ -1,6 +1,28 @@
 const form = document.forms['PXK'];
 let productData = [];
-let currentPXKNumber = 1;
+
+// Fetch the product data
+fetch('dssp.json')
+  .then(res => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    return res.json();
+  })
+  .then(data => {
+    productData = data;
+    console.log('Loaded products:', productData.length);
+
+    // Start with an empty table; user can add rows using the "+" button on hover
+    getNextPXKNumber();
+
+    const dateInput = document.querySelector('.date');
+    if (dateInput) {
+      dateInput.value = new Date().toLocaleDateString('vi-VN');
+    }
+  })
+  .catch(err => {
+    console.error("Failed to load dssp.json:", err);
+    getNextPXKNumber();
+  });
 
 // Function to format PXK number with leading zeros
 function formatPXKNumber(num) {
@@ -26,29 +48,6 @@ function savePXKNumber() {
   localStorage.setItem('lastPXKNumber', currentPXKNumber.toString());
 }
 
-// Fetch the product data
-fetch('dssp.json')
-  .then(res => {
-    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-    return res.json();
-  })
-  .then(data => {
-    productData = data;
-    console.log('Loaded products:', productData.length);
-
-    generateRows(12);
-    getNextPXKNumber();
-
-    const dateInput = document.querySelector('.date');
-    if (dateInput) {
-      dateInput.value = new Date().toLocaleDateString('vi-VN');
-    }
-  })
-  .catch(err => {
-    console.error("Failed to load dssp.json:", err);
-    getNextPXKNumber();
-  });
-
 // Function to generate rows
 function generateRows(numRows) {
   const tableBody = document.getElementById('table-body');
@@ -57,14 +56,17 @@ function generateRows(numRows) {
   tableBody.innerHTML = "";
 
   for (let i = 0; i < numRows; i++) {
-    createRow(i + 1);
+    createRow();
   }
 }
 
 function createRow(rowIndex) {
-  if (rowIndex > 12) return;
-
   const tableBody = document.getElementById('table-body');
+  if (!tableBody) return;
+
+  const currentRows = tableBody.querySelectorAll('tr').length;
+  const effectiveIndex = (typeof rowIndex === 'number') ? rowIndex : (currentRows + 1);
+
   const row = document.createElement("tr");
 
   let productOptions = '<option value=""></option>';
@@ -77,77 +79,195 @@ function createRow(rowIndex) {
   // STT cell starts empty - will be filled when product is selected
   row.innerHTML = `
         <td class="stt"></td>
-        <td>
-            <select class="product-select" name="Tên sản phẩm" ${rowIndex > 1 ? 'disabled' : ''}>
-                ${productOptions}
-            </select>
+        <td class="product-cell">
+            <textarea class="product-input" name="Tên sản phẩm" rows="1"></textarea>
+            <div class="suggestions" aria-hidden="true"></div>
         </td>
-        <td><input type="text" class="code" name="Mã hàng" readonly></td>
-        <td><input type="text" class="unity" name="Đơn vị tính" readonly></td>
-        <td><input type="text" class="quantity" name="Số lượng" min="1" ${rowIndex > 1 ? 'disabled' : ''}></td>
+        <td><input type="text" class="code" name="Mã hàng" ></td>
+        <td><input type="text" class="unity" name="Đơn vị tính" ></td>
+        <td><input type="text" class="quantity" name="Số lượng" min="1"}></td>
     `;
 
   tableBody.appendChild(row);
-  attachRowEvents(row, rowIndex);
+
+  // Show the row index in the STT column immediately when the row is created
+  const sttCell = row.querySelector('.stt');
+  if (sttCell) sttCell.textContent = effectiveIndex;
+
+  attachRowEvents(row, effectiveIndex);
+
+  // Make sure the previous row (if any) height fits its product-input content
+  const allRows = tableBody.querySelectorAll('tr');
+  const prevRow = allRows[effectiveIndex - 2];
+  if (prevRow) {
+    if (typeof prevRow._autoResize === 'function') {
+      prevRow._autoResize();
+    } else {
+      // Fallback: try to compute height directly
+      const prevInput = prevRow.querySelector('.product-input');
+      if (prevInput) {
+        prevInput.style.height = 'auto';
+        prevInput.style.height = prevInput.scrollHeight + 'px';
+      }
+    }
+  }
 }
 
-// Add behavior to product select
+// Add behavior to product input (textarea autocomplete)
 function attachRowEvents(row, rowIndex) {
   const sttCell = row.querySelector('.stt');
-  const select = row.querySelector('.product-select');
+  const input = row.querySelector('.product-input');
+  const suggestions = row.querySelector('.suggestions');
   const code = row.querySelector('.code');
   const unity = row.querySelector('.unity');
   const quantity = row.querySelector('.quantity');
 
-  select.addEventListener('change', () => {
-    const selectedIndex = select.value;
+  // Auto-resize textarea to fit content
+  function autoResize() {
+    if (!input) return;
+    input.style.height = 'auto';
+    // Use scrollHeight to set a natural height; capped by CSS max-height
+    const h = input.scrollHeight;
+    input.style.height = h + 'px';
+  }
 
-    if (selectedIndex === "") {
-      // Clear row and hide STT
-      sttCell.textContent = "";
-      code.value = "";
-      unity.value = "";
-      quantity.value = "";
+  // Call once to initialize height
+  autoResize();
+  // Expose as a method on the row so other code can trigger resize when needed
+  row._autoResize = autoResize;
 
-      // If clearing the current row, disable next rows
-      disableRowsAfter(rowIndex);
-    } else if (productData && productData[selectedIndex]) {
-      const product = productData[selectedIndex];
-      // Show STT only when product is selected
-      sttCell.textContent = rowIndex;
-      code.value = product.productCode || "";
-      unity.value = product.unit || "";
-      quantity.value = "";
+  function hideSuggestions() {
+    suggestions.style.display = 'none';
+    suggestions.innerHTML = '';
+    suggestions.setAttribute('aria-hidden', 'true');
+  }
 
-      // Enable quantity input for this row
-      if (quantity) quantity.disabled = false;
+  function showSuggestions(items) {
+    if (!items || items.length === 0) {
+      hideSuggestions();
+      return;
+    }
+    suggestions.innerHTML = items.map(i => {
+      const p = productData[i.index] || {};
+      const code = p.productCode || '';
+      const unit = p.unit || '';
+      return `<div class="suggestion-item" data-index="${i.index}"><div class="s-main">${escapeHtml(p.productName || '')}</div><div class="s-sub">${escapeHtml((code ? code : ''))}${code && unit ? ' • ' : ''}${escapeHtml(unit || '')}</div></div>`;
+    }).join('');
+    suggestions.style.display = 'block';
+    suggestions.setAttribute('aria-hidden', 'false');
+  }
 
-      // Create new row if this is the last one
-      const tableRows = document.querySelectorAll('#table-body tr');
-      if (rowIndex === tableRows.length) {
-        createRow(rowIndex + 1);
+  // Input typing: filter matches and show suggestions
+  input.addEventListener('input', () => {
+    autoResize();
+    const q = input.value.trim().toLowerCase();
+
+    // Build set of already selected indices (exclude current row)
+    const selectedIndices = new Set();
+    document.querySelectorAll('#table-body tr').forEach(tr => {
+      if (tr === row) return;
+      if (tr.dataset.productIndex) selectedIndices.add(tr.dataset.productIndex);
+    });
+
+    if (!q) {
+      // If cleared, remove current selection if exists
+      if (row.dataset.productIndex) {
+        delete row.dataset.productIndex;
+        sttCell.textContent = '';
+        code.value = '';
+        unity.value = '';
+        quantity.value = '';
+        disableRowsAfter(rowIndex);
+        updateProductDropdowns();
       }
-
-      // Enable the NEXT row's select if it exists
-      enableNextRow(rowIndex);
+      // reset height
+      input.style.height = '';
+      hideSuggestions();
+      return;
     }
 
-    // Update visibility of all dropdowns
+    const matches = [];
+    productData.forEach((p, idx) => {
+      if (selectedIndices.has(String(idx))) return; // already used
+      if (p.productName && p.productName.toLowerCase().includes(q)) matches.push({ productName: p.productName, index: idx });
+    });
+
+    showSuggestions(matches.slice(0, 12));
+  });
+
+  // Click on suggestion
+  suggestions.addEventListener('click', (e) => {
+    const item = e.target.closest('.suggestion-item');
+    if (!item) return;
+    const idx = item.dataset.index;
+    const product = productData[idx];
+    if (!product) return;
+
+    input.value = product.productName;
+    row.dataset.productIndex = idx;
+    sttCell.textContent = rowIndex;
+    code.value = product.productCode || '';
+    unity.value = product.unit || '';
+    if (quantity) quantity.disabled = false;
+
+    // Resize input to match selected product name
+    autoResize();
+
+    hideSuggestions();
+
+    enableNextRow(rowIndex);
     updateProductDropdowns();
   });
 
-  quantity.addEventListener('input', () => {
-    const qtyValue = quantity.value.trim();
+  // Hide suggestions shortly after blur to allow click
+  input.addEventListener('blur', () => {
+    setTimeout(hideSuggestions, 150);
+  });
 
-    if (qtyValue) {
-      // Create new row if this is the last one AND has quantity
-      const tableRows = document.querySelectorAll('#table-body tr');
-      if (rowIndex === tableRows.length) {
-        createRow(rowIndex + 1);
+  // Keyboard navigation in suggestions
+  input.addEventListener('keydown', (e) => {
+    const items = suggestions.querySelectorAll('.suggestion-item');
+    if (!items.length) return;
+    const active = suggestions.querySelector('.suggestion-item.active');
+    let idx = Array.prototype.indexOf.call(items, active);
+
+    if (e.key === 'ArrowDown') {
+      idx = (idx + 1) % items.length;
+      if (active) active.classList.remove('active');
+      items[idx].classList.add('active');
+      items[idx].scrollIntoView({ block: 'nearest' });
+      e.preventDefault();
+    } else if (e.key === 'ArrowUp') {
+      idx = (idx - 1 + items.length) % items.length;
+      if (active) active.classList.remove('active');
+      items[idx].classList.add('active');
+      items[idx].scrollIntoView({ block: 'nearest' });
+      e.preventDefault();
+    } else if (e.key === 'Enter') {
+      if (active) {
+        active.click();
+        e.preventDefault();
       }
     }
   });
+
+  // quantity.addEventListener('input', () => {
+  //   const qtyValue = quantity.value.trim();
+
+  //   if (qtyValue) {
+  //     const tableRows = document.querySelectorAll('#table-body tr');
+  //     if (rowIndex === tableRows.length) {
+  //       createRow();
+  //     }
+  //   }
+  // });
 }
+
+// small helper to escape HTML in suggestion items
+function escapeHtml(str) {
+  return String(str).replace(/[&"'<>]/g, (s) => ({ '&': '&amp;', '"': '&quot;', "'": '&#39;', '<': '&lt;', '>': '&gt;' }[s]));
+}
+
 
 // Function to enable the next row after current row
 function enableNextRow(currentRowIndex) {
@@ -155,11 +275,11 @@ function enableNextRow(currentRowIndex) {
 
   if (currentRowIndex < tableRows.length) {
     const nextRow = tableRows[currentRowIndex]; // 0-indexed
-    const nextSelect = nextRow.querySelector('.product-select');
+    const nextInput = nextRow.querySelector('.product-input');
     const nextQuantity = nextRow.querySelector('.quantity');
 
-    if (nextSelect) {
-      nextSelect.disabled = false;
+    if (nextInput) {
+      nextInput.disabled = false;
     }
     if (nextQuantity) {
       nextQuantity.disabled = false;
@@ -173,15 +293,14 @@ function disableRowsAfter(rowIndex) {
 
   for (let i = rowIndex; i < tableRows.length; i++) {
     const row = tableRows[i];
-    const select = row.querySelector('.product-select');
+    const input = row.querySelector('.product-input');
     const quantity = row.querySelector('.quantity');
     const sttCell = row.querySelector('.stt');
 
-    if (select) {
-      select.disabled = true;
-      if (select.value === "") {
-        select.value = "";
-      }
+    if (input) {
+      input.disabled = true;
+      input.value = "";
+      delete row.dataset.productIndex;
     }
 
     if (quantity) {
@@ -213,34 +332,57 @@ function generateRows(numRows) {
   tableBody.innerHTML = "";
 
   for (let i = 0; i < numRows; i++) {
-    createRow(i + 1);
+    createRow();
   }
 }
 
-// Modified updateProductDropdowns to consider disabled state
-function updateProductDropdowns() {
-  const allSelects = document.querySelectorAll('.product-select:not([disabled])');
-  const selectedIndices = new Set();
-
-  // Collect all selected product indices from ENABLED selects
-  document.querySelectorAll('.product-select').forEach(select => {
-    if (select.value !== "") {
-      selectedIndices.add(select.value);
-    }
-  });
-
-  // Update visibility for each ENABLED dropdown
-  allSelects.forEach(select => {
-    const currentValue = select.value;
-    Array.from(select.options).forEach(option => {
-      if (option.value === "") return; // Keep empty option visible
-      // Hide option if it's selected in another dropdown, but show it if it's the current one
-      option.hidden = selectedIndices.has(option.value) && option.value !== currentValue;
-    });
+// Hook add-row button to create rows (visible on table hover)
+const addRowBtn = document.getElementById('add-row-btn');
+if (addRowBtn) {
+  addRowBtn.addEventListener('click', () => {
+    createRow();
   });
 }
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuW5MCct2gTdNBvKQjgg7fHblkEHjBxtpldOeIIxhyiUxy6ZWcpvYIhisY3dPrywFA/exec'; // replace
+// Update suggestion lists and avoid showing already-selected products
+function updateProductDropdowns() {
+  // Collect selected indices
+  const selectedIndices = new Set();
+  document.querySelectorAll('#table-body tr').forEach(tr => {
+    if (tr.dataset.productIndex) selectedIndices.add(tr.dataset.productIndex);
+  });
+
+  // Refresh visible suggestion lists (if user has typed in that row)
+  document.querySelectorAll('.product-input').forEach(input => {
+    const q = input.value.trim().toLowerCase();
+    const sug = input.parentElement.querySelector('.suggestions');
+    if (!q) {
+      if (sug) {
+        sug.style.display = 'none';
+        sug.innerHTML = '';
+      }
+      return;
+    }
+
+    const matches = [];
+    productData.forEach((p, idx) => {
+      if (selectedIndices.has(String(idx)) && input.value !== p.productName) return;
+      if (p.productName && p.productName.toLowerCase().includes(q)) matches.push({ productName: p.productName, index: idx });
+    });
+
+    if (sug) {
+      sug.innerHTML = matches.slice(0, 12).map(i => {
+        const p = productData[i.index] || {};
+        const code = p.productCode || '';
+        const unit = p.unit || '';
+        return `<div class="suggestion-item" data-index="${i.index}"><div class="s-main">${escapeHtml(p.productName || '')}</div><div class="s-sub">${escapeHtml((code ? code : ''))}${code && unit ? ' • ' : ''}${escapeHtml(unit || '')}</div></div>`;
+      }).join('');
+      sug.style.display = matches.length ? 'block' : 'none';
+    }
+  });
+}
+
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfs4Y-7ql5qvunqdrU8ba4lbWZVF-KPmc0sE-ZtSjvF6_2NCWOlLySCapTclJkMyNo/exec'; // replace
 
 async function gatherFormData() {
   const form = document.forms['PXK'];
@@ -257,34 +399,39 @@ async function gatherFormData() {
     }
   }
 
-  // Collect product rows
+  // Collect product rows - FIXED to match Apps Script expectations
   const rows = [];
   const tableRows = document.querySelectorAll('#table-body tr');
 
   tableRows.forEach((tr, index) => {
     // Get elements by name within each row
-    const nameSelect = tr.querySelector('select[name="Tên sản phẩm"]');
+    const nameInput = tr.querySelector('textarea[name="Tên sản phẩm"], input[name="Tên sản phẩm"]');
     const codeInput = tr.querySelector('input[name="Mã hàng"]');
     const unitInput = tr.querySelector('input[name="Đơn vị tính"]');
     const qtyInput = tr.querySelector('input[name="Số lượng"]');
 
-    if (nameSelect && qtyInput) {
-      const productName = nameSelect.selectedIndex > 0 ? nameSelect.options[nameSelect.selectedIndex].text : '';
+    if (nameInput && qtyInput) {
+      const productName = nameInput.value.trim();
       const qtyValue = qtyInput.value.trim();
 
       if (productName && qtyValue) {
         rows.push({
-          STT: index + 1,
-          Tên: productName,
-          Mã: codeInput?.value || '',
-          Đvị: unitInput?.value || '',
-          SL: qtyValue
+          'Tên hàng': productName,
+          'Mã hàng': codeInput?.value.trim() || '',
+          'Đơn vị': unitInput?.value.trim() || '',
+          'Số lượng': qtyValue
         });
       }
     }
   });
 
   payload.rows = rows;
+
+  // Debug log to see what's being sent
+  console.log('Payload to send:', payload);
+  console.log('Rows count:', rows.length);
+  console.log('Rows data:', rows);
+
   return payload;
 }
 
@@ -315,7 +462,7 @@ async function submitToSheet() {
 // Save first, then print, then clear and increment PXK
 function clearFormForNext() {
   // clear top-level customer/transport fields
-  const idsToClear = ['customer-name', 'customer-company', 'customer-address', 'customer-tax', 'invoice-number', 'invoice-date-2', 'warehouse', 'batch', 'delivery-info', 'truck-number', 'driver-name'];
+  const idsToClear = ['customer-name', 'customer-address', 'customer-tax', 'invoice-number', 'invoice-date-2', 'warehouse', 'batch', 'delivery-info', 'truck-number', 'driver-name'];
   idsToClear.forEach(id => {
     const el = document.getElementById(id);
     if (el) el.value = '';
@@ -325,8 +472,6 @@ function clearFormForNext() {
   const tableBody = document.getElementById('table-body');
   if (tableBody) {
     tableBody.innerHTML = '';
-    // Regenerate rows with only first row enabled
-    generateRows(12);
   }
 
   // set invoice date to today
@@ -338,23 +483,36 @@ function clearFormForNext() {
 }
 
 async function sendPayload(payload) {
-  // Try normal CORS fetch first so we can read the response
+  console.log('Sending payload to Apps Script:', payload);
+
   try {
+    // First try with CORS if possible
     const res = await fetch(APPS_SCRIPT_URL, {
       method: 'POST',
-      mode: 'cors',
-      headers: { 'Content-Type': 'application/json' },
+      mode: 'cors', // Try with cors first
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(payload)
     });
 
     if (res && res.ok) {
-      const json = await res.json().catch(() => null);
-      return { ok: true, json };
+      const text = await res.text();
+      console.log('Response from Apps Script:', text);
+      try {
+        const json = JSON.parse(text);
+        return { ok: true, json };
+      } catch (e) {
+        // Response is not JSON but might still be OK
+        return { ok: true, json: null, text };
+      }
+    } else {
+      throw new Error(res ? `HTTP ${res.status}` : 'No response');
     }
-    // If response exists but not ok, throw to go to fallback
-    throw new Error(res ? `HTTP ${res.status}` : 'No response');
   } catch (err) {
-    // Fallback: fire a no-cors request (opaque) and optimistically assume success
+    console.warn('CORS fetch failed, trying no-cors:', err);
+
+    // Fallback: fire a no-cors request
     try {
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
@@ -363,9 +521,11 @@ async function sendPayload(payload) {
         body: JSON.stringify(payload)
       });
       // Wait a short moment to allow server to process
-      await new Promise(r => setTimeout(r, 1000));
+      await new Promise(r => setTimeout(r, 1500));
+      console.log('No-cors request sent (optimistic)');
       return { ok: true, json: null, optimistic: true };
     } catch (err2) {
+      console.error('No-cors also failed:', err2);
       return { ok: false, error: err2 };
     }
   }

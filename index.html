@@ -57,8 +57,7 @@
                     <div class="left">
                         <p>Tên, đơn vị và địa chỉ khách hàng:</p>
                         <div class="inputArea">
-                            <input class="name" type="text" name="Tên khách" id="customer-name">
-                            <input class="company" type="text" name="Đơn vị" id="customer-company">
+                            <textarea class="name" name="Tên khách" id="customer-name" maxlength="90"></textarea>
                             <textarea class="address" name="Địa chỉ" id="customer-address" maxlength="90"></textarea>
                         </div>
                     </div>
@@ -91,21 +90,25 @@
             </div>
 
             <div class="content">
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="sttHead">STT</th>
-                            <th class="prodNameHead">Tên hàng hóa, dịch vụ</th>
-                            <th class="codeHead">Mã hàng</th>
-                            <th class="unityHead">Đơn vị tính</th>
-                            <th class="quantityHead">Số lượng</th>
-                        </tr>
-                    </thead>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="sttHead">STT</th>
+                                <th class="prodNameHead">Tên hàng hóa, dịch vụ</th>
+                                <th class="codeHead">Mã hàng</th>
+                                <th class="unityHead">Đơn vị tính</th>
+                                <th class="quantityHead">Số lượng</th>
+                            </tr>
+                        </thead>
 
-                    <tbody id="table-body">
-                        <!-- Input rows will be added here -->
-                    </tbody>
-                </table>
+                        <tbody id="table-body">
+                            <!-- Input rows will be added here -->
+                        </tbody>
+                    </table>
+
+                    <button id="add-row-btn" class="add-row-btn" type="button" aria-label="Thêm dòng">＋</button>
+                </div>
 
                 <div class="transport">
                     <div class="transfer">
