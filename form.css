@@ -16,33 +16,33 @@ input {
 }
 
 body {
-    height: 28cm;
+    height: 27.9cm;
     width: 100vw;
 }
 
 .container {
-    width: 18.8cm;
-    height: 28cm;
+    width: 18.5cm;
+    height: 27.9cm;
     margin: auto;
     border: 1px solid black;
     display: flex;
 }
 
 form {
-    width: 18.1cm;
-    height: 28cm;
-    margin-left: 0.3cm;
-    margin-right: 0.4cm;
+    width: 18cm;
+    height: 27.9cm;
+    margin-left: 0.2cm;
+    margin-right: 0.2cm;
 }
 
 .header {
-    width: 18.1cm;
+    width: 18cm;
     height: 8.4cm;
 }
 
 .co {
-    width: 18.1cm;
-    height: 4.6cm;
+    width: 18cm;
+    height: 4.5cm;
     border: 1px solid red;
     display: flex;
     justify-content: flex-end;
@@ -52,40 +52,45 @@ form {
 }
 
 .co .formName {
-    width: 5.5cm;
+    width: 5.1cm;
     height: 4.5cm;
     display: flex;
     flex-direction: column;
 }
 
 .co .formName .nameSection {
-    width: 5.5cm;
-    height: 3.5cm;
+    width: 5.1cm;
+    height: 2.9cm;
     border: 1px solid blue;
 }
 
-.co .formName .formNumber {
-    width: 5.3cm;
-    height: 0.7cm;
+.co .formName .mainNumber {
+    width: 5.1cm;
+    height: 0.9cm;
     border: 1px solid purple;
-    margin-left: 0.2cm;
-    margin-bottom: 0.5cm;
     display: flex;
 }
 
-.co .formName .formNumber label {
+.co .formName .altNumber {
+    width: 5.1cm;
+    height: 0.6cm;
+    border: 1px solid purple;
+    display: flex;
+}
+
+.co .formName .mainNumber label {
     width: 0.7cm;
-    height: 0.7cm;
+    height: 0.9cm;
 }
 
-.co .formName .formNumber input {
-    width: 4.6cm;
-    height: 0.7cm;
+.co .formName .mainNumber input {
+    width: 4.4cm;
+    height: 0.9cm;
 }
 
-.co .formName .formNumber .number {
-    width: 5.3cm;
-    height: 0.7cm;
+.co .formName .altNumber .number {
+    width: 5.1cm;
+    height: 0.6cm;
     font-size: 12px;
     color: red;
     font-weight: bold;
@@ -93,23 +98,23 @@ form {
 }
 
 .customer {
-    width: 18.1cm;
+    width: 18cm;
     height: 3.7cm;
     display: flex;
 }
 
 .customer .left {
-    width: 9.3cm;
+    width: 9.2cm;
     height: 3.7cm;
 }
 
 .customer .left p {
-    height: 0.55cm;
-    width: 9.3cm;
+    height: 0.5cm;
+    width: 9.2cm;
 }
 
 .customer .left .inputArea {
-    width: 9.3cm;
+    width: 9.2cm;
     height: 2.8cm;
     display: flex;
     flex-direction: column;
@@ -128,7 +133,7 @@ form {
 .right {
     width: 8.8cm;
     height: 2.8cm;
-    margin-top: 0.5cm;
+    margin-top: 0.4cm;
     margin-bottom: 0.5cm;
 }
 
@@ -166,31 +171,31 @@ form {
 }
 
 .content {
-    width: 18.1cm;
-    height: 14cm;
+    width: 18cm;
+    height: 13.9cm;
 }
 
 .content table {
-    width: 18.1cm;
+    width: 18cm;
     height: 10.6cm;
     border-collapse: collapse;
 }
 
 .content table thead {
-    width: 18.1cm;
+    width: 18cm;
     height: 0.8cm;
 }
 
 .content table tbody {
-    width: 18.1cm;
+    width: 18cm;
     height: 9.8cm;
 }
 
 .content table tbody tr {
-    width: 18.1cm;
-    min-height: 0.8cm;
+    width: 18cm;
+    min-height: 0.98cm;
     height: 0.8cm;
-    max-height: 6cm;
+    max-height: 4.9cm;
     /* allow rows to expand vertically when textarea grows */
     vertical-align: middle;
     overflow: visible;
@@ -279,7 +284,7 @@ table .unityHead {
     border: none;
     font-size: 15px;
     margin: 0;
-    padding: 0 4px;
+    padding: 0;
     width: 100%;
     min-height: 0.8cm;
     /* keep a minimum row height */
@@ -294,25 +299,13 @@ table .unityHead {
 .product-input {
     resize: none;
     overflow-y: auto;
-    /* allow vertical scrolling if content exceeds max-height */
     padding: 4px;
-    line-height: 1;
-    max-height: 6cm;
-    /* match row maximum */
 }
 
-.product-input {
-    resize: none;
-    overflow: hidden;
-    padding: 4px;
-    line-height: 1;
-}
-
-/* Ensure the cell can contain an absolutely-positioned suggestions box */
 .product-cell {
     position: relative;
     overflow: visible;
-    /* allow suggestions to overflow the cell to the right */
+    height: fit-content;
 }
 
 /* Suggestion list (appears to the right of the product cell) */
@@ -371,7 +364,7 @@ table .unityHead {
 
 
 .content .transport {
-    width: 18.1cm;
+    width: 18cm;
     height: 3.4cm;
     border: 1px solid green;
     display: flex;
@@ -380,73 +373,73 @@ table .unityHead {
 }
 
 .content .transport .transfer {
-    width: 18.1cm;
-    height: 2.55cm;
+    width: 18cm;
+    height: 2.4cm;
     display: flex;
     flex-direction: column;
 }
 
 .content .transport .transfer label {
-    width: 18.1cm;
-    height: 0.85cm;
+    width: 18cm;
+    height: 0.8cm;
     display: flex;
     align-items: center;
 }
 
 .content .transport .transfer textarea {
-    width: 18.1cm;
-    height: 1.7cm;
+    width: 18cm;
+    height: 1.6cm;
     font-size: 15px;
     resize: none;
-    line-height: 0.85cm;
+    line-height: 0.8cm;
     overflow: hidden;
     white-space: pre-wrap;
 }
 
 .content .transport .truck {
-    width: 18.1cm;
-    height: 0.85cm;
+    width: 18cm;
+    height: 1cm;
     display: flex;
 }
 
 .content .transport .truck .truckNumber {
-    height: 0.85cm;
-    width: 8.1cm;
+    height: 1cm;
+    width: 8cm;
     display: flex;
 }
 
 .content .transport .truck .truckNumber label {
-    height: 0.85cm;
+    height: 0.8cm;
     width: 3cm;
     display: flex;
     align-items: center
 }
 
 .content .transport .truck .truckNumber input {
-    height: 0.85cm;
-    width: 5.1cm;
+    height: 0.8cm;
+    width: 5cm;
 }
 
 .content .transport .truck .driver {
-    height: 0.85cm;
+    height: 0.8cm;
     width: 10cm;
     display: flex;
 }
 
 .content .transport .truck .driver label {
-    height: 0.85cm;
+    height: 0.8cm;
     width: 2cm;
     display: flex;
     align-items: center
 }
 
 .content .transport .truck .driver input {
-    height: 0.85cm;
+    height: 0.8cm;
     width: 8cm;
 }
 
 .footer {
-    width: 18.1cm;
+    width: 18cm;
     height: 5.7cm;
     display: flex;
     align-items: center;
@@ -459,16 +452,16 @@ table .unityHead {
 
 @media print {
     @page {
-        width: 18.8cm;
-        height: 28cm;
+        width: 18.5cm;
+        height: 27.9cm;
         padding: 0 !important;
         margin: 0 !important;
     }
 
     html,
     body {
-        width: 18.8cm;
-        height: 28cm;
+        width: 18.5cm;
+        height: 27.9cm;
         margin: 0;
         padding: 0;
         box-sizing: border-box;
@@ -480,8 +473,8 @@ table .unityHead {
     }
 
     .container {
-        width: 18.8cm;
-        height: 28cm;
+        width: 18.5cm;
+        height: 27.9cm;
         padding: 0 !important;
         margin: 0 !important;
         overflow: hidden;

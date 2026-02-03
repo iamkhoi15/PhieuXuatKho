@@ -94,7 +94,7 @@ function createRow(rowIndex) {
   row.innerHTML = `
         <td class="stt"></td>
         <td class="product-cell">
-            <textarea class="product-input" name="Tên sản phẩm" rows="1"></textarea>
+            <textarea class="product-input" name="Tên sản phẩm" maxlength="100"></textarea>
             <div class="suggestions" aria-hidden="true"></div>
         </td>
         <td><input type="text" class="code" name="Mã hàng" ></td>
@@ -103,6 +103,14 @@ function createRow(rowIndex) {
     `;
 
   tableBody.appendChild(row);
+
+  // Ensure the product textarea starts with a visible height of 0.8cm
+  const createdInput = row.querySelector('.product-input');
+  if (createdInput) {
+    createdInput.style.minHeight = '0.8cm';
+    createdInput.style.overflow = 'hidden';
+    createdInput.style.resize = 'none';
+  }
 
   // Show the row index in the STT column immediately when the row is created
   const sttCell = row.querySelector('.stt');
@@ -140,8 +148,10 @@ function attachRowEvents(row, rowIndex) {
   function autoResize() {
     if (!input) return;
     input.style.height = 'auto';
-    // Use scrollHeight to set a natural height; capped by CSS max-height
-    const h = input.scrollHeight;
+    // Respect any CSS min-height so the textarea starts at 0.8cm and grows as needed
+    const computed = window.getComputedStyle(input);
+    const minH = parseFloat(computed.minHeight) || 0;
+    const h = Math.max(input.scrollHeight, minH);
     input.style.height = h + 'px';
   }
 
@@ -576,20 +586,10 @@ async function saveThenPrint() {
     }, 4000);
   });
 
-  // After print is done, clear form and increment PXK
-  currentPXKNumber = (typeof currentPXKNumber === 'number') ? currentPXKNumber + 1 : (parseInt(localStorage.getItem('lastPXKNumber') || '1') + 1);
-  savePXKNumber();
-
-  // IMPORTANT: Update the PXK input field IMMEDIATELY
-  const pxkInput = document.querySelector('input[name="Số PXK"]');
-  if (pxkInput) {
-    pxkInput.value = 'PXK-' + formatPXKNumber(currentPXKNumber);
-  }
-
-  clearFormForNext();
+  // After print is done, do NOT increment PXK - that happens only with clear button
 }
 
-// Wire up combined behavior to the print button (override inline onclick)
+// Wire up print button
 const printBtn = document.getElementById('print-button');
 if (printBtn) {
   // remove inline onclick handler if present
@@ -605,5 +605,23 @@ if (printBtn) {
     } finally {
       printBtn.disabled = false;
     }
+  });
+}
+
+// Wire up separate clear button
+const clearBtn = document.getElementById('clear-button');
+if (clearBtn) {
+  clearBtn.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    currentPXKNumber = (typeof currentPXKNumber === 'number') ? currentPXKNumber + 1 : (parseInt(localStorage.getItem('lastPXKNumber') || '1') + 1);
+    savePXKNumber();
+
+    // Update the PXK input field
+    const pxkInput = document.querySelector('input[name="Số PXK"]');
+    if (pxkInput) {
+      pxkInput.value = 'PXK-' + formatPXKNumber(currentPXKNumber);
+    }
+
+    clearFormForNext();
   });
 }
